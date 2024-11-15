@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Добавить пользователя</title>
+</head>
+<body>
+<h2>Добавить пользователя</h2>
+<div>
+    <form th:action="@{/logout}" method="post">
+        <input type="submit" value="Выйти">
+    </form>
+    <br>
+    <form method="POST" th:action="@{/admin/save}" th:object="${user}">
+        <fieldset>
+            <legend>Данные пользователя</legend>
+            <label for="name">Enter name</label>
+            <input type="text" th:field="*{name}" id="name"/>
+            </p>
+            <label for="login">Last name</label>
+            <input type="text" th:field="*{login}" id="login"/>
+            </p>
+            <label for="age">Age</label>
+            <input type="number" th:field="*{age}" id="age"/>
+            </p>
+            <label for="email">Email</label>
+            <input type="text" th:field="*{email}" id="email"/>
+            </p>
+            <label for="password">Password</label>
+            <input type="password" th:field="*{password}" id="password"/>
+            </p>
+            <label>
+                <select th:name="roles" multiple>
+                    <option value="ROLE_ADMIN" th:selected="${#lists.contains(user.roles, 'ROLE_ADMIN')}">ROLE_ADMIN</option>
+                    <option value="ROLE_USER" th:selected="${#lists.contains(user.roles, 'ROLE_USER')}">ROLE_USER</option>
+                </select>
+            </label>
+            </p>
+        </fieldset>
+        <br/>
+        <button style="background: lightgray" type="submit">Сохранить пользователя</button>
+    </form>
+    <br/>
+    <form th:action="@{/admin}">
+        <button style="background: lightgray" type="submit" class="btn btn-outline-danger">Назад к списку
+            пользователей
+        </button>
+    </form>
+</div>
+</body>
+</html>
