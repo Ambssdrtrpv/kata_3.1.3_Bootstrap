@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Добавить пользователя</title>
+</head>
+<body>
+<h2>Добавить пользователя</h2>
+<div>
+    <form th:action="@{/logout}" method="post">
+        <input type="submit" value="Выйти">
+    </form>
+    <br>
+    <form method="POST" th:action="@{/admin/save}" th:object="${user}">
+        <fieldset>
+            <legend>Данные пользователя</legend>
+            <label for="name">Enter name</label>
+            <input type="text" th:field="*{name}" id="name"/>
+            </p>
+            <label for="login">Login</label>
+            <input type="text" th:field="*{login}" id="login"/>
+            </p>
+            <label for="age">Age</label>
+            <input type="number" th:field="*{age}" id="age"/>
+            </p>
+            <label for="email">Email</label>
+            <input type="text" th:field="*{email}" id="email"/>
+            </p>
+            <label for="password">Password</label>
+            <input type="password" th:field="*{password}" id="password"/>
+<!--            </p>-->
+<!--            <label>-->
+<!--                <select id="roles" th:name="roles" th:field="*{roles}">-->
+<!--                    <option th:each="role : ${roles}"-->
+<!--                            th:value="${role.id}"-->
+<!--                            th:text="${role.name}"-->
+<!--                            th:selected="${role.id == role}"></option>-->
+<!--                </select>-->
+<!--            </label>-->
+<!--            </p>-->
+            <p>
+                <label>Roles:
+                    <input type="checkbox" name="authorities"
+                           th:each="role : ${roles}"
+                           th:text="${role.name}"
+                           th:value="${role.id}"
+                           th:checked="${user.roles.contains(role)}"
+                    />
+                </label>
+            </p>
+        </fieldset>
+        <br/>
+        <button style="background: lightgray" type="submit">Сохранить пользователя</button>
+    </form>
+    <br/>
+    <form th:action="@{/admin}">
+        <button style="background: lightgray" type="submit" class="btn btn-outline-danger">Назад к списку
+            пользователей
+        </button>
+    </form>
+</div>
+</body>
+</html>

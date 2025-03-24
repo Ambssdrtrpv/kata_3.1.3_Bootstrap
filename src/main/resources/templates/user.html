@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Найденный пользователь</title>
+</head>
+<body>
+<div>
+    <form th:action="@{/logout}" method="post">
+        <input type="submit" value="Выйти">
+    </form>
+    <hr/>
+    <table border="2">
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Login</th>
+            <th>Age</th>
+            <th>Email</th>
+            <th>Role</th>
+
+        </tr>
+        <tr>
+            <td th:text="${user.getId()}"/>
+            <td th:text="${user.getName()}"/>
+            <td th:text="${user.getLogin()}"/>
+            <td th:text="${user.getAge()}"/>
+            <td th:text="${user.getEmail()}"/>
+            <td th:each="role:${user.roles}" th:text="${role.name}"/>
+        </tr>
+    </table>
+</div>
+</body>
+</html>
