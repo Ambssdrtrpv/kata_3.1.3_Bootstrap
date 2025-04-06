@@ -7,66 +7,299 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Админ. Все пользователи!</title>
     <link href="/Users/sabina/Desktop/INeedIt/ExSpring/src/main/resources/static/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .sidebar {
+            background-color: white;
+            height: 100vh; /* Полная высота экрана */
+            width: 250px; /* Ширина боковой панели */
+
+        }
+        .content {
+            background-color: #f8f9fa; /* Цвет фона для правой части */
+        }
+        .table {
+            margin: 0; /* Убираем отступы для таблицы */
+            width: 99%; /* Устанавливаем ширину таблицы на 100% */
+        }
+        .hidden {
+            display: none !important;
+        }
+        .sidebar .btn {
+            margin-bottom: 5px;
+            text-align: left;
+        }
+    </style>
 
 </head>
 <body>
-<h2>Привет, Админ. Вот, все пользователи:</h2>
-<div class="container">
-    <div class="row">
-        <div class="col">1</div>
-        <div class="col">2</div>
-        <div class="col">3</div>
+
+<div class="container-fluid" style="padding-left: 0; padding-right: 0;"> <!-- Основной контейнер -->
+<!--    <h2>Привет, Админ. Вот, все челы йоу:</h2>-->
+    <div class="row"> <!-- Строка для выравнивания -->
+        <!-- Вкладки -->
+        <ul class="nav nav-tabs" id="TabOfAllUsersAndNewUsers" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active" id="UsersTable" data-toggle="tab" href="#users"
+                   role="tab" aria-controls="Users table" aria-selected="true" >Users table</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="NewUser" data-toggle="tab" href="#newuser"
+                   role="tab" aria-controls="New Users" aria-selected="false">New User</a>
+
+            </li>
+
+
+<!--            <div class="nav-item">-->
+<!--                <button type="button" class="btn btn-primary float-start">Users table</button>-->
+<!--                <button type="button" class="btn btn-light">New User</button>-->
+<!--            </div>-->
+            <div class="col content p-3">
+                <!-- Панель навигации -->
+                <ul class="nav nav-tabs mb-3">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#" id="admin-tab">Users table</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" id="new-user-tab">New User</a>
+                    </li>
+                </ul>
+
+                <!-- Таблица Admin -->
+                <div id="admin-table">
+                    <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th colspan="3" class="title-cell table-title">All users</th>
+                        </tr>
+                        <tr>
+                            <th scope="col">ID</th>
+                            <th scope="col">First Name</th>
+                            <th scope="col">Last Name</th>
+                            <th scope="col">Age</th>
+                            <th scope="col">Email</th>
+                            <th scope="col">Role</th>
+                            <th scope="col">Edit</th>
+                            <th scope="col">Delete</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="user : ${users}">
+                            <td th:text="${user.getId()}">ID</td>
+                            <td th:text="${user.getName()}">First Name</td>
+                            <td th:text="${user.getLogin()}">Last Name</td>
+                            <td th:text="${user.getAge()}">Age</td>
+                            <td th:text="${user.getEmail()}">Email</td>
+                            <td th:text="${user.getRoles()}">Role</td>
+                            <td>
+                                <form th:action="@{/admin/edit/{id}(id=${user.id})}" th:object="${user}">
+                                    <button type="button" class="btn btn-info btn-sm mx-1">Edit</button>
+                                </form>
+                            </td>
+                            <td>
+                                <form th:method="DELETE" th:action="@{/admin/delete/{id}(id=${user.id})}">
+                                    <input type="hidden" name="id" th:value="${user.id}">
+                                    <button type="button" class="btn btn-danger btn-sm mx-1">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                    </tbody>
+                    </table>
+                </div>
+    <!--            <div class="tab-pane fade" id="newusertab" role="tabpanel" aria-labelledby="new-user-tab"-->
+    <!--                 th:include="/admin/save :: save"></div>-->
+            </div>
+        </ul>
+            <!-- Создаение user -->
+<!--            <div id="new-user-form" class="hidden">-->
+<!--                <div class="card">-->
+<!--                    <div class="card-header bg-primary text-white">-->
+<!--                        <h4 class="mb-0">Создание нового пользователя</h4>-->
+<!--                    </div>-->
+<!--                    <div class="card-body">-->
+<!--                        <form method="POST" th:action="@{/admin/save}" th:object="${user}">-->
+<!--                            <div class="mb-3">-->
+<!--                                <label for="name" class="form-label">Имя</label>-->
+<!--                                <input type="text" class="form-control" th:field="*{name}" id="name">-->
+<!--                            </div>-->
+
+<!--                            <div class="mb-3">-->
+<!--                                <label for="login" class="form-label">Логин</label>-->
+<!--                                <input type="text" class="form-control" th:field="*{login}" id="login">-->
+<!--                            </div>-->
+
+<!--                            <div class="mb-3">-->
+<!--                                <label for="age" class="form-label">Возраст</label>-->
+<!--                                <input type="number" class="form-control" th:field="*{age}" id="age">-->
+<!--                            </div>-->
+
+<!--                            <div class="mb-3">-->
+<!--                                <label for="email" class="form-label">Email</label>-->
+<!--                                <input type="email" class="form-control" th:field="*{email}" id="email">-->
+<!--                            </div>-->
+
+<!--                            <div class="mb-3">-->
+<!--                                <label for="password" class="form-label">Пароль</label>-->
+<!--                                <input type="password" class="form-control" th:field="*{password}" id="password">-->
+<!--                            </div>-->
+
+<!--                            <div class="mb-3">-->
+<!--                                <label class="form-label">Роли:</label>-->
+<!--                                <div th:each="role : ${roles}" class="form-check">-->
+<!--                                    <input class="form-check-input" type="checkbox" name="authorities"-->
+<!--                                           th:value="${role.id}" th:id="${'role-' + role.id}"-->
+<!--                                           th:checked="${user.roles.contains(role)}">-->
+<!--                                    <label class="form-check-label" th:for="${'role-' + role.id}" th:text="${role.name}"></label>-->
+<!--                                </div>-->
+<!--                            </div>-->
+
+<!--                            <div class="d-flex gap-2">-->
+<!--                                <button type="submit" class="btn btn-primary">Сохранить</button>-->
+<!--                                <button type="button" id="cancel-new-user" class="btn btn-outline-secondary">Отмена</button>-->
+<!--                            </div>-->
+<!--                        </form>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+        </div>
     </div>
 </div>
-<div>
+<!-- Подключение jQuery -->
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<!-- Подключаем jQuery и Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-    <hr/>
-    <table>
-        <tr>
-            <th>Id</th>
-            <th>Имя</th>
-            <th>Логин</th>
-            <th>Возраст</th>
-            <th>Электронная почта</th>
-            <th>Роль</th>
-        </tr>
+<script>
+    $(document).ready(function () {
+        $('#myButton').click(function () {
+            $('#message').text('Кнопка нажата!');
+        });
+    });
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Элементы
+        const adminTab = document.getElementById('admin-tab');
+        const newUserTab = document.getElementById('new-user-tab');
+        const adminBtn = document.getElementById('sidebar-admin-btn');
+        const newUserBtn = document.getElementById('sidebar-new-user-btn');
+        const adminTable = document.getElementById('admin-table');
+        const newUserForm = document.getElementById('newusertab');
 
-        <tr th:each="user : ${users}">
-            <td th:text="${user.getId()}">Id</td>
-            <td th:text="${user.getName()}">Имя</td>
-            <td th:text="${user.getLogin()}">Логин</td>
-            <td th:text="${user.getAge()}">Возраст</td>
-            <td th:text="${user.getEmail()}">Электронная почта</td>
-            <td th:text="${user.getRoles()}">Роль</td>
+        // Функция для сброса активных состояний
+        function resetActive() {
+            adminTab.classList.remove('active');
+            newUserTab.classList.remove('active');
+            adminTable.classList.add('hidden');
+            newUserForm.classList.add('hidden');
+            adminBtn.classList.remove('btn-primary');
+            adminBtn.classList.add('btn-light');
+            newUserBtn.classList.remove('btn-primary');
+            newUserBtn.classList.add('btn-light');
+        }
 
-            <td>
-                <form th:action="@{/admin/show/{id}(id=${user.id})}" th:object="${user}">
-                    <button style="background: mintcream" type="submit">Посмотреть</button>
-                </form>
-            </td>
-            <td>
-                <form th:action="@{/admin/edit/{id}(id=${user.id})}" th:object="${user}">
-                    <button style="background: mintcream" type="submit">Изменить</button>
-                </form>
-            </td>
-            <td>
-                <form th:method="DELETE" th:action="@{/admin/delete/{id}(id=${user.id})}">
-                    <input type="hidden" name="id" th:value="${user.id}">
-                    <button style="background: moccasin" type="submit" value="Delete">Удалить</button>
-                </form>
-            </td>
-        </tr>
-    </table>
-    <br>
-    <form th:action="@{/admin/new}">
-        <button style="background: lightgray" type="submit">Добавить нового пользователя</button>
-    </form>
-    <br>
-    <form th:action="@{/logout}" method="post">
-        <input style="background: lightgray" type="submit" value="Выйти">
-    </form>
-</div>
-<script src="/Users/sabina/Desktop/INeedIt/ExSpring/src/main/resources/static/bootstrap.bundle.min.js"></script>
+        // Обработчики клика
+        adminTab.addEventListener('click', function(e) {
+            e.preventDefault();
+            resetActive();
+            adminTab.classList.add('active');
+            adminTable.classList.remove('hidden');
+            adminBtn.classList.add('btn-primary');
+            adminBtn.classList.remove('btn-light');
+        });
+
+        newUserTab.addEventListener('click', function(e) {
+            e.preventDefault();
+            resetActive();
+            newUserTab.classList.add('active');
+            newUserForm.classList.remove('hidden');
+            newUserBtn.classList.add('btn-primary');
+            newUserBtn.classList.remove('btn-light');
+        });
+
+        // Обработчики для кнопок в сайдбаре
+        adminBtn.addEventListener('click', function() {
+            resetActive();
+            adminTab.classList.add('active');
+            adminTable.classList.remove('hidden');
+            adminBtn.classList.add('btn-primary');
+        });
+
+        newUserBtn.addEventListener('click', function() {
+            resetActive();
+            newUserTab.classList.add('active');
+            newUserForm.classList.remove('hidden');
+            newUserBtn.classList.add('btn-primary');
+        });
+    });
+</script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+        <!--<div class="container">-->
+<!--    <div class="row">-->
+<!--        <div class="col">1</div>-->
+<!--        <div class="col">2</div>-->
+<!--        <div class="col">3</div>-->
+<!--    </div>-->
+<!--</div>-->
+<!--<div>-->
+
+<!--    <hr/>-->
+<!--    <table>-->
+<!--        <tr>-->
+<!--            <th>Id</th>-->
+<!--            <th>Имя</th>-->
+<!--            <th>Логин</th>-->
+<!--            <th>Возраст</th>-->
+<!--            <th>Электронная почта</th>-->
+<!--            <th>Роль</th>-->
+<!--        </tr>-->
+
+<!--        <tr th:each="user : ${users}">-->
+<!--            <td th:text="${user.getId()}">Id</td>-->
+<!--            <td th:text="${user.getName()}">Имя</td>-->
+<!--            <td th:text="${user.getLogin()}">Логин</td>-->
+<!--            <td th:text="${user.getAge()}">Возраст</td>-->
+<!--            <td th:text="${user.getEmail()}">Электронная почта</td>-->
+<!--            <td th:text="${user.getRoles()}">Роль</td>-->
+
+<!--            <td>-->
+<!--                <form th:action="@{/admin/show/{id}(id=${user.id})}" th:object="${user}">-->
+<!--                    <button style="background: mintcream" type="submit">Посмотреть</button>-->
+<!--                </form>-->
+<!--            </td>-->
+<!--            <td>-->
+<!--                <form th:action="@{/admin/edit/{id}(id=${user.id})}" th:object="${user}">-->
+<!--                    <button style="background: mintcream" type="submit">Изменить</button>-->
+<!--                </form>-->
+<!--            </td>-->
+<!--            <td>-->
+<!--                <form th:method="DELETE" th:action="@{/admin/delete/{id}(id=${user.id})}">-->
+<!--                    <input type="hidden" name="id" th:value="${user.id}">-->
+<!--                    <button style="background: moccasin" type="submit" value="Delete">Удалить</button>-->
+<!--                </form>-->
+<!--            </td>-->
+<!--        </tr>-->
+<!--    </table>-->
+<!--    <br>-->
+<!--    <form th:action="@{/admin/new}">-->
+<!--        <button style="background: lightgray" type="submit">Добавить нового пользователя</button>-->
+<!--    </form>-->
+<!--    <br>-->
+<!--    <form th:action="@{/logout}" method="post">-->
+<!--        <input style="background: lightgray" type="submit" value="Выйти">-->
+<!--    </form>-->
+<!--</div>-->
+<!--<script src="/Users/sabina/Desktop/INeedIt/ExSpring/src/main/resources/static/bootstrap.bundle.min.js"></script>-->
+<!--</body>-->
+<!--</html>-->
 
